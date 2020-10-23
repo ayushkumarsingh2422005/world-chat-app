@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://kit.fontawesome.com/9d89bb858d.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9">
+        </script>
+        <!--fire base cdn-->
+        <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Page Title</title>
+        <!--
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script> 
+        <script> 
+            AOS.init(); 
+        </script>
+        -->
+    </head>
+    <body>
+        <!-- Loader code -->
+        <div class="loader_container">
+            <div class="loader_sub">
+                <div id="loader_1"></div>
+                <div id="loader_2"></div>
+                <div id="loader_3"></div>
+            </div>
+            <div class="loader_text"></div>
+        </div>
+        <div id="btn1">
+            <a href="#d1">
+                <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+            </a>
+        </div>
+        <form>
+            <fieldset>
+                <legend id="d2">User data</legend>
+                <label for="inp1">Name :–</label>
+                <input id="inp1" type="text"/>
+                <br><br>
+                <label for="inp2">Your Message :–</label>
+                <br>
+                <textarea id="inp2"></textarea>
+                <br>
+                <input value="submit" type="button" id="myBtn"/>
+            </fieldset>
+        </form>
+        <div id="dv">
+        
+        </div>
+        <i id="d1"></i>
+        <div id="btn2">
+            <a href="#d2">
+                <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div id="count"></div> 
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Anton&family=Chelsea+Market&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rowdies&display=swap');
+
+html{
+    scroll-behavior:smooth;
+}
+body {
+    box-sizing:border-box;
+}
+fieldset{
+    border-style:double;
+    border-width:4px;
+    border-color:red blue;
+}
+
+form{
+    width:100%;
+}
+label{
+    font-family: 'Chelsea Market', cursive;
+}
+input{
+    width:calc(100% - 4px);
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight:bold;
+}
+legend{
+    font-family: 'Anton', sans-serif;
+    border-style: double double solid double;
+    border-width:4px;
+    border-color:red;
+}
+textarea{
+    width:calc(100% - 5px);
+    height:100px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight:bold;
+}
+#dv{
+    border:2px solid #0000ff;
+    margin-top:50px;
+}
+#nm{
+    display:inline;
+    padding-left:10px;
+    font-family: 'Chelsea Market', cursive;
+    padding-top:10px;
+    padding-right:10px;
+    overflow:scroll;
+}
+#nb{
+    background-color:#fffc00;
+    margin-top:5px;
+    padding:7px 5px 15px 10px;
+    font-size:12px;
+    font-weight:bold;
+    font-family:font-family: 'Rowdies', cursive;
+    overflow:scroll;
+}
+#mn{
+    margin-left:15px;
+    margin-right:15px;
+    border-left:5px solid red;
+    background-color:#00ff00;
+    margin-top:10px;
+    margin-bottom:10px;
+    outline-style:solid;
+}
+#myBtn{
+    height:20px;
+    float:right;
+    width:60px;
+    margin-top:10px;
+    font-size:10px;
+    background-color:black;
+    color:white;
+}
+#btn1{
+    position:fixed ;
+    right:10px;
+    top:10px;
+    border-radius:50%;
+    background-color:yellow;
+}
+#btn2{
+    position:fixed ;
+    right:10px;
+    bottom:10px;
+    border-radius:50%;
+    background-color:pink;
+}
+a{
+    text-decoration:none;
+}
+#date{
+    font-size:5px;
+    margin-left:5px;
+    margin-bottom:10px;
+    margin-top:5px;
+    padding-bottom:5px;
+}
+i{
+    font-size:30px;
+}
+#count{
+    display:none;
+}
+h2{
+    color:red;
+}
+#btn{
+    line-height:0;
+    height:20px;
+    float:right;
+    background-color:transparent;
+    border-style:none;
+}
+i{
+    font-size:20px !important;
+    color:red;
+}
+#cr{
+    height:100vh;
+    width:100%;
+    overflow:scroll;
+    color:green !important;
+}
+.loader_container{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    width:100vw;
+    background-color:black;
+}
+.loader_sub{
+    height:150px;
+    width:150px;
+    background-color:transparent;
+    margin-top:calc(50vh - 150px);
+    margin-left:calc(50vw - 75px);
+    position:relative;
+}
+.loader_sub > div{
+    height:5px;
+    width:150px;
+    position:absolute;
+    bottom:0;
+    border-radius:50px;
+    animation:animate1 1s ease-out infinite;
+    background:linear-gradient(90deg, transparent ,#8DF3FF);
+    background-repeat:no-repeat;
+}
+.loader_s > div{
+    height:4px !important;
+    width:130px !important;
+}
+#loader_1{
+    transform-origin:50% 50%;
+    transform:rotate(180deg);
+}
+#loader_2{
+    transform:rotate(-60deg);
+    transform-origin:0% 50%;
+}
+#loader_3{
+    transform:rotate(60deg);
+    transform-origin:100% 50%;
+}
+
+@keyframes animate1{
+    0%{
+        background-size:0% 100%;
+    }
+    100%{
+        background-size:100% 100%;
+    }
+    
+}
+.loader_text{
+    height:20px;
+    width:100vw;
+    background-color:none;
+    position:fixed;
+    margin-top:50px;
+    text-align:center;
+    font-size:30px;
+    letter-spacing:5px;
+}
+.loader_text::before{
+    color:white;
+    content:"Loading";
+    animation:animate2 2s infinite;
+}
+
+@keyframes animate2{
+    0%{
+        content:"Loading";
+    }
+    25%{
+        content:"Loading.";
+    }
+    50%{
+        content:"Loading..";
+    }
+    75%{
+        content:"Loading...";
+    }
+    100%{
+        content:"Loading...";
+    }
+    
+}
+
+        </style>
+        <script>
+            // Created by 乂۝丹ⓨㄩک廾۝乂〖թг๏〗
+
+//// inappropriate ends here
+   const config = {
+      apiKey: "AIzaSyAzLbffKlawMIL5_5npRRpAYxFLVOCqmcU",
+      authDomain: "ayush-ba2d5.firebaseapp.com",
+      databaseURL: "https://ayush-ba2d5.firebaseio.com",
+      projectId: "ayush-ba2d5",
+      storageBucket: "ayush-ba2d5.appspot.com",
+      messagingSenderId: "256855219834",
+      appId: "1:256855219834:web:284917e5f10f27fcfea5c3",
+      measurementId: "G-DCL0TK5X5V"
+    };
+    // inteliging firebase
+    firebase.initializeApp(config);
+    var db=firebase.firestore();
+    db.settings({timestampsInSnapshots: true});
+    
+function x(){
+    document.body.innerHTML="<div id='cr'><h2>Temporarly blocked for some days!<br>If you want to explore how this works and still want to get code working as it works earlier then directly message me. And last thing the spammers and the most idiot peoples who are constently uploading inappropriate content are requested to make a such code. Because i know intelligent peoples dont have time to waste in spaming. And spamers dont have any knowledge so they simply west their time<br>What do you think guys am i right ?</h2>Notice: code is still working dont think it will never work. I got many request to restart so come to direct message if you wanna use it.<br><br></div>";
+    console.log("Temporarly  blocked\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+}
+
+try{
+var d1,d2;
+
+d1 = {
+    0:'SUNDAY',
+    1:'MONDAY',
+    2:'TUESDAY',
+    3:'WEDNESDAY',
+    4:'THURSDAY',
+    5:'FRIDAY',
+    6:'SATURDAY'
+}
+
+d2 = {
+    0:"January",
+    1:"February",
+    2:"March",
+    3:"April",
+    4:"May",
+    5:"June",
+    6:"July",
+    7:"August",
+    8:"September",
+    9:"October",
+    10:"November",
+    11:"December"    
+}
+
+function time(){
+        var d = new Date();
+        var sec = d.getSeconds();
+        var min = d.getMinutes();
+        var hor = d.getHours();
+        var dat = d.getDate();
+        var mon = d.getMonth();
+        var yer = d.getFullYear();
+        var day = d.getDay();
+        var d_y = d1[day];
+        var m_n = d2[mon];
+        
+        if (sec<10){
+            sec = "0"+sec;
+        }
+        
+        if (min<10){
+            min = "0"+min;
+        }
+        
+        if (hor>12){
+            hor = hor -12 ;
+            if (hor<10){
+                hor = "0"+hor;
+            }
+            var a_p = "PM"
+        }
+        else {
+            var a_p = "AM";
+            if(hor<10){
+                    hor = "0"+hor;
+                }
+        }
+        
+        return dat+" "+m_n+" "+yer+" / "+d_y+" / "+hor+":"+min+":"+sec+" "+a_p;
+    }
+
+
+
+
+
+/////////////////////////////////////////////////////
+
+
+
+
+window.onload = function(){
+    // blocked code
+    //x();
+    // blocked code
+    $(".loader_container").css("display","none");
+    Swal.fire({
+        icon: 'success',
+        title: 'Welcome To world chat web app',
+        html: 'Avoid giving access load as server is in initial stage..',
+        footer: '&copy Ayush blog 2020'
+    });
+    
+    // reciving data from fire base
+    
+    
+    // sending data to datatabase 
+    
+    var bn =  document.getElementById("myBtn");
+    bn.addEventListener("click", function(){
+        var in1 = document.getElementById("inp1").value;
+        var in2 = document.getElementById("inp2").value;
+        // chequing inappropriate
+        /*
+        for (i in in1){
+            if (in1[i] in inappropriate || in2[i] in inappropriate){
+                in1=""
+                in2=""
+            }
+        }
+        */
+        //chequing inappropriate over
+        if (in1.replace(/" "/g,"") == "" || in2.replace(/" "/g,"") =="" || in1=="" || in2==""){
+            alert("please enter a good data");
+        }
+        else {
+            in1 = in1.replace(/>/g,"&gt;").replace(/</g,"&lt;");
+            in2 = in2.replace(/>/g,"&gt;").replace(/</g,"&lt;");
+            var dalt = time();
+            var a=document.getElementById("count").innerHTML;
+            var datatasend= {Name:in1,Roll_no:in2,Sn:a,Date:dalt}
+            db.collection('Details').add(datatasend);
+        
+            document.getElementById("inp2").value="";
+            tp();
+        }
+        
+    });
+}
+
+// try block end
+}
+catch(err){
+    document.body.innerHTML = "";
+    document.write("<h1>This code is temporarly blocked by user wait for few hours so that code restarts by itself</h1><br>Error is"+err);
+}
+function del(p){
+        db.collection("Details").doc(p).delete().then(function(){
+            
+        });
+        tp();
+    }
+    function tp(){
+       
+       db.collection('Details').orderBy("Sn").get().then(l);
+    }
+    //setInterval(tp,1000);
+    tp();
+    function l(snap){
+    var a = 1;
+    document.getElementById("dv").innerHTML = "";     
+        // getting catogrical data by for loop
+        for(pg in snap.docs){
+            //*data deleting
+            var id = snap.docs[pg].id;
+            //db.collection("Details").doc(id).delete();
+            //*/
+            var name = snap.docs[pg].data().Name;
+            var numb = snap.docs[pg].data()["Roll_no"];
+            var dtat = snap.docs[pg].data().Date;
+            var ht = "<div id='mn'><div id='nm'>"+a+". "+name.replace(/>/g,"&gt;").replace(/</g,"&lt;")+"<button id='btn' onclick='del(";            
+            ht += '"'+id+'"';
+            ht += ")'><i class='fa fa-trash' aria-hidden='true'></i></button></div><div id='nb'>"+numb.replace(/>/g,"&gt;").replace(/</g,"&lt;")+"</div><div id='date'>"+dtat+"</div></div>";
+            dv.insertAdjacentHTML("afterbegin",ht);
+            a++; document.getElementById("count").innerHTML=a;
+        }
+    }
+        </script>
+    </body>
+</html>
